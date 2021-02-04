@@ -34,7 +34,7 @@ class TSNDataSet(data.Dataset):
         self.num_segments = num_segments
         self.new_length = new_length
         self.modality = modality
-        self.image_tmpl = 'frame{:06d}.jpg' if modality is 'RGB' else 'flow_{}_{:06d}.jpg'
+        self.image_tmpl = image_tmpl
         self.transform = transform
         self.random_shift = random_shift
         self.test_mode = test_mode
