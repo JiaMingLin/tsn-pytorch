@@ -58,7 +58,7 @@ parser.add_argument('-e', '--evaluate', dest='evaluate', action='store_true',
 # parser.add_argument('--snapshot_pref', type=str, default="")
 parser.add_argument('--start-epoch', default=0, type=int, metavar='N',
                     help='manual epoch number (useful on restarts)')
-parser.add_argument('--gpus', nargs='+', type=int, default=None)
+parser.add_argument('--gpus', default='0' type=str)
 parser.add_argument('--flow_prefix', default="", type=str)
 
 
