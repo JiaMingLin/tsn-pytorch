@@ -2,7 +2,7 @@
 
 **We have released [MMAction](https://github.com/open-mmlab/mmaction), a full-fledged action understanding toolbox based on PyTorch. It includes implementation for TSN as well as other STOA frameworks for various tasks. The lessons we learned in this repo are incorporated into MMAction to make it bettter. We highly recommend you switch to it. This repo will remain here for historical references.**
 
-**Note**: always use `git clone --recursive https://github.com/yjxiong/tsn-pytorch` to clone this project. 
+**Note**: always use `git clone --recursive https://github.com/JiaMingLin/tsn-pytorch.git` to clone this project. 
 Otherwise you will not be able to use the inception series CNN archs. 
 
 This is a reimplementation of temporal segment networks (TSN) in PyTorch. All settings are kept identical to the original caffe implementation.
