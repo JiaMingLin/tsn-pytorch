@@ -78,7 +78,7 @@ def main():
 
     train_loader = torch.utils.data.DataLoader(
         TSNDataSet(args.data_root_path, args.train_list, num_segments=args.num_segments,
-                   new_length=args.new_length,
+                   new_length=new_length,
                    modality=args.modality,
                    image_tmpl="frame{:06d}.jpg" if args.modality in ["RGB", "RGBDiff"] else args.flow_prefix+"{}_{:06d}.jpg",
                    transform=torchvision.transforms.Compose([
