@@ -14,14 +14,15 @@ from models import TSN
 from transforms import *
 from opts import parser
 
+from tensorboardX import SummaryWriter 
+
 import warnings
 warnings.filterwarnings("ignore")
 
 best_prec1 = 0
 
-
 def main():
-    global args, best_prec1
+    global args, best_prec1, tb_writer, log_dir
     args = parser.parse_args()
 
     if args.dataset == 'ucf101':
@@ -32,6 +33,9 @@ def main():
         num_class = 400
     else:
         raise ValueError('Unknown dataset '+args.dataset)
+
+    log_dir = 'logs/{}'.format(args.save_path)
+    tb_writer = SummaryWriter(log_dir)
 
     model = TSN(num_class, args.num_segments, args.modality,
                 base_model=args.arch,
@@ -73,7 +77,7 @@ def main():
 
     train_loader = torch.utils.data.DataLoader(
         TSNDataSet(args.data_root_path, args.train_list, num_segments=args.num_segments,
-                   new_length=data_length,
+                   new_length=args.new_length,
                    modality=args.modality,
                    image_tmpl="frame{:06d}.jpg" if args.modality in ["RGB", "RGBDiff", 'lk_flow'] else args.flow_prefix+"{}_{:05d}.jpg",
                    transform=torchvision.transforms.Compose([
@@ -124,11 +128,19 @@ def main():
         adjust_learning_rate(optimizer, epoch, args.lr_steps)
 
         # train for one epoch
-        train(train_loader, model, criterion, optimizer, epoch)
+        avg_loss, avg_top1, avg_top5 = train(train_loader, model, criterion, optimizer, epoch)
+        writer.add_scalar('Training Loss', avg_loss, epoch)
+        writer.add_scalar('Training Top1', avg_top1, epoch)
+        writer.add_scalar('Training Top5', avg_top5, epoch)
+
 
         # evaluate on validation set
         if (epoch + 1) % args.eval_freq == 0 or epoch == args.epochs - 1:
-            prec1 = validate(val_loader, model, criterion, (epoch + 1) * len(train_loader))
+            avg_loss, avg_top1, avg_top5 = validate(val_loader, model, criterion, (epoch + 1) * len(train_loader))
+
+            writer.add_scalar('Validation Loss', avg_loss, epoch)
+            writer.add_scalar('Validation Top1', avg_top1, epoch)
+            writer.add_scalar('Validation Top5', avg_top5, epoch)
 
             # remember best prec@1 and save checkpoint
             is_best = prec1 > best_prec1
@@ -201,6 +213,7 @@ def train(train_loader, model, criterion, optimizer, epoch):
                   'Prec@5 {top5.val:.3f} ({top5.avg:.3f})'.format(
                    epoch, i, len(train_loader), batch_time=batch_time,
                    data_time=data_time, loss=losses, top1=top1, top5=top5, lr=optimizer.param_groups[-1]['lr'])))
+    return losses.avg, top1.avg, top5.avg
 
 
 def validate(val_loader, model, criterion, iter, logger=None):
@@ -245,14 +258,31 @@ def validate(val_loader, model, criterion, iter, logger=None):
     print(('Testing Results: Prec@1 {top1.avg:.3f} Prec@5 {top5.avg:.3f} Loss {loss.avg:.5f}'
           .format(top1=top1, top5=top5, loss=losses)))
 
-    return top1.avg
+    return losses.avg, top1.avg, top5.avg
 
 
 def save_checkpoint(state, is_best, filename='checkpoint.pth.tar'):
-    filename = '_'.join((args.snapshot_pref, args.modality.lower(), filename))
-    torch.save(state, filename)
+    global log_dir
+    filename = '_'.join(
+        (
+            '[{}]'.format(state['epoch']), 
+            '{.2f}'.format(state['best_prec1']),
+            state['arch'], 
+            args.modality.lower(), 
+            filename)
+        )
+    save_path = os.path.join(log_dir, filename)
+    torch.save(state, save_path)
     if is_best:
-        best_name = '_'.join((args.snapshot_pref, args.modality.lower(), 'model_best.pth.tar'))
+        best_name = '_'.join(
+            (
+                'best',
+                '[{}]'.format(state['epoch']), 
+                '{.2f}'.format(state['best_prec1']),
+                args.modality.lower(), 
+                '.pth.tar')
+            )
+        best_path = os.path.join(log_dir, best_name)
         shutil.copyfile(filename, best_name)
 
 
@@ -301,4 +331,5 @@ def accuracy(output, target, topk=(1,)):
 
 
 if __name__ == '__main__':
+    ## Log directory
     main()
