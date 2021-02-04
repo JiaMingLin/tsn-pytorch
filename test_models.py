@@ -135,6 +135,8 @@ for i, (data, label) in data_gen:
     print('video {} done, total {}/{}, average {} sec/video'.format(i, i+1,
                                                                     total_num,
                                                                     float(cnt_time) / (i+1)))
+    del(data)
+    del(label)
 
 video_pred = [np.argmax(np.mean(x[0], axis=0)) for x in output]
 
