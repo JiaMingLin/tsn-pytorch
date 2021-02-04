@@ -16,6 +16,7 @@ parser = argparse.ArgumentParser(
     description="Standard video-level testing")
 parser.add_argument('dataset', type=str, choices=['ucf101', 'hmdb51', 'kinetics'])
 parser.add_argument('modality', type=str, choices=['RGB', 'Flow', 'RGBDiff'])
+parser.add_argument('data_root_path', type=str)
 parser.add_argument('test_list', type=str)
 parser.add_argument('weights', type=str)
 parser.add_argument('--arch', type=str, default="resnet101")
@@ -69,7 +70,7 @@ else:
     raise ValueError("Only 1 and 10 crops are supported while we got {}".format(args.test_crops))
 
 data_loader = torch.utils.data.DataLoader(
-        TSNDataSet("", args.test_list, num_segments=args.test_segments,
+        TSNDataSet(args.data_root_path, args.test_list, num_segments=args.test_segments,
                    new_length=1 if args.modality == "RGB" else 5,
                    modality=args.modality,
                    image_tmpl="frame{:06d}.jpg" if args.modality in ['RGB', 'RGBDiff'] else args.flow_prefix+"{}_{:06d}.jpg",
