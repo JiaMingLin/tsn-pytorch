@@ -30,8 +30,8 @@ parser.add_argument('--k', type=int, default=3)
 parser.add_argument('--dropout', type=float, default=0.7)
 parser.add_argument('-j', '--workers', default=4, type=int, metavar='N',
                     help='number of data loading workers (default: 4)')
-parser.add_argument('--gpus', nargs='+', type=int, default=None)
-parser.add_argument('--flow_prefix', type=str, default='')
+parser.add_argument('--gpus', type=str, default='0')
+parser.add_argument('--flow_prefix', type=str, default='flow')
 
 args = parser.parse_args()
 
@@ -72,7 +72,7 @@ data_loader = torch.utils.data.DataLoader(
         TSNDataSet("", args.test_list, num_segments=args.test_segments,
                    new_length=1 if args.modality == "RGB" else 5,
                    modality=args.modality,
-                   image_tmpl="img_{:05d}.jpg" if args.modality in ['RGB', 'RGBDiff'] else args.flow_prefix+"{}_{:05d}.jpg",
+                   image_tmpl="frame{:06d}.jpg" if args.modality in ['RGB', 'RGBDiff'] else args.flow_prefix+"{}_{:06d}.jpg",
                    test_mode=True,
                    transform=torchvision.transforms.Compose([
                        cropping,
@@ -84,7 +84,7 @@ data_loader = torch.utils.data.DataLoader(
         num_workers=args.workers * 2, pin_memory=True)
 
 if args.gpus is not None:
-    devices = [args.gpus[i] for i in range(args.workers)]
+    devices = [int(id) for id in apgs.gpus.split(',')]
 else:
     devices = list(range(args.workers))
 
