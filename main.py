@@ -146,7 +146,7 @@ def main():
             # remember best prec@1 and save checkpoint
             is_best = avg_top1 > best_prec1
             best_prec1 = max(avg_top1, best_prec1)
-            save_checkpoint({
+            save_checkpoint(log_dir, {
                 'epoch': epoch + 1,
                 'arch': args.arch,
                 'state_dict': model.state_dict(),
@@ -262,11 +262,11 @@ def validate(val_loader, model, criterion, iter, logger=None):
     return losses.avg, top1.avg, top5.avg
 
 
-def save_checkpoint(state, is_best, filename='checkpoint.pth.tar'):
-    global log_dir
+def save_checkpoint(log_dir, state, is_best, filename='checkpoint.pth.tar'):
+    
     filename = '_'.join(
         (
-            '[{}]'.format(state['epoch']), 
+            'epoch_{}'.format(state['epoch']), 
             '{:0.2f}'.format(state['best_prec1']),
             state['arch'], 
             args.modality.lower(), 
@@ -278,7 +278,7 @@ def save_checkpoint(state, is_best, filename='checkpoint.pth.tar'):
         best_name = '_'.join(
             (
                 'best',
-                '[{}]'.format(state['epoch']), 
+                'epoch_{}'.format(state['epoch']), 
                 '{:0.2f}'.format(state['best_prec1']),
                 args.modality.lower(), 
                 '.pth.tar')
