@@ -48,7 +48,8 @@ def main():
     policies = model.get_optim_policies()
     train_augmentation = model.get_augmentation()
 
-    model = torch.nn.DataParallel(model, device_ids=args.gpus).cuda()
+    device_ids = [id for id in args.gpus.split(',')]
+    model = torch.nn.DataParallel(model, device_ids=device_ids).cuda()
 
     if args.resume:
         if os.path.isfile(args.resume):
