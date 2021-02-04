@@ -48,7 +48,7 @@ def main():
     policies = model.get_optim_policies()
     train_augmentation = model.get_augmentation()
 
-    device_ids = [id for id in args.gpus.split(',')]
+    device_ids = [int(id) for id in args.gpus.split(',')]
     model = torch.nn.DataParallel(model, device_ids=device_ids).cuda()
 
     if args.resume:
