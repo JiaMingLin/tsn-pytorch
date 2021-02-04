@@ -11,6 +11,8 @@ from models import TSN
 from transforms import *
 from ops import ConsensusModule
 
+from copy import deepcopy
+
 import warnings
 warnings.filterwarnings("ignore")
 
@@ -129,14 +131,11 @@ max_num = args.max_num if args.max_num > 0 else len(data_loader.dataset)
 for i, (data, label) in data_gen:
     if i >= max_num:
         break
-    rst = eval_video((i, data, label))
-    output.append(rst[1:])
+    output.append(eval_video((i, data, label))[1:])
     cnt_time = time.time() - proc_start_time
     print('video {} done, total {}/{}, average {} sec/video'.format(i, i+1,
                                                                     total_num,
                                                                     float(cnt_time) / (i+1)))
-    del(data)
-    del(label)
 
 video_pred = [np.argmax(np.mean(x[0], axis=0)) for x in output]
 
