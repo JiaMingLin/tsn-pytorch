@@ -284,7 +284,7 @@ def save_checkpoint(log_dir, state, is_best, filename='checkpoint.pth.tar'):
                 '.pth.tar')
             )
         best_path = os.path.join(log_dir, best_name)
-        shutil.copyfile(filename, best_name)
+        shutil.copyfile(save_path, best_path)
 
 
 class AverageMeter(object):

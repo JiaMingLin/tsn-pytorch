@@ -22,7 +22,7 @@ parser.add_argument('--arch', type=str, default="resnet101")
 parser.add_argument('--save_scores', type=str, default=None)
 parser.add_argument('--test_segments', type=int, default=25)
 parser.add_argument('--max_num', type=int, default=-1)
-parser.add_argument('--test_crops', type=int, default=10)
+parser.add_argument('--test_crops', type=int, default=1)
 parser.add_argument('--input_size', type=int, default=224)
 parser.add_argument('--crop_fusion_type', type=str, default='avg',
                     choices=['avg', 'max', 'topk'])
