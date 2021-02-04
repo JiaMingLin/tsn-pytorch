@@ -279,7 +279,7 @@ def save_checkpoint(state, is_best, filename='checkpoint.pth.tar'):
             (
                 'best',
                 '[{}]'.format(state['epoch']), 
-                '{.2f}'.format(state['best_prec1']),
+                '{:0.2f}'.format(state['best_prec1']),
                 args.modality.lower(), 
                 '.pth.tar')
             )
