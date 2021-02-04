@@ -84,7 +84,7 @@ data_loader = torch.utils.data.DataLoader(
         num_workers=args.workers * 2, pin_memory=True)
 
 if args.gpus is not None:
-    devices = [int(id) for id in apgs.gpus.split(',')]
+    devices = [int(id) for id in args.gpus.split(',')]
 else:
     devices = list(range(args.workers))
 
