@@ -129,18 +129,18 @@ def main():
 
         # train for one epoch
         avg_loss, avg_top1, avg_top5 = train(train_loader, model, criterion, optimizer, epoch)
-        writer.add_scalar('Training Loss', avg_loss, epoch)
-        writer.add_scalar('Training Top1', avg_top1, epoch)
-        writer.add_scalar('Training Top5', avg_top5, epoch)
+        tb_writer.add_scalar('Monitor/Training Loss', avg_loss, epoch)
+        tb_writer.add_scalar('Monitor/Training Top1', avg_top1, epoch)
+        tb_writer.add_scalar('Monitor/Training Top5', avg_top5, epoch)
 
 
         # evaluate on validation set
         if (epoch + 1) % args.eval_freq == 0 or epoch == args.epochs - 1:
             avg_loss, avg_top1, avg_top5 = validate(val_loader, model, criterion, (epoch + 1) * len(train_loader))
 
-            writer.add_scalar('Validation Loss', avg_loss, epoch)
-            writer.add_scalar('Validation Top1', avg_top1, epoch)
-            writer.add_scalar('Validation Top5', avg_top5, epoch)
+            writer.add_scalar('Monitor/Validation Loss', avg_loss, epoch)
+            writer.add_scalar('Monitor/Validation Top1', avg_top1, epoch)
+            writer.add_scalar('Monitor/Validation Top5', avg_top5, epoch)
 
             # remember best prec@1 and save checkpoint
             is_best = prec1 > best_prec1
