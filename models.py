@@ -59,7 +59,11 @@ TSN Configurations:
             self.partialBN(True)
 
     def _prepare_tsn(self, num_class):
-        feature_dim = getattr(self.base_model, self.base_model.last_layer_name).in_features
+
+        if self.base_model.last_layer_name is 'classifier':
+            feature_dim = 1280
+        else:
+            feature_dim = getattr(self.base_model, self.base_model.last_layer_name).in_features
         if self.dropout == 0:
             setattr(self.base_model, self.base_model.last_layer_name, nn.Linear(feature_dim, num_class))
             self.new_fc = None
@@ -78,9 +82,9 @@ TSN Configurations:
 
     def _prepare_base_model(self, base_model):
 
-        if 'resnet' in base_model or 'vgg' in base_model:
+        if 'resnet' in base_model or 'vgg' in base_model or 'mobilenet' in base_model:
             self.base_model = getattr(torchvision.models, base_model)(True)
-            self.base_model.last_layer_name = 'fc'
+            self.base_model.last_layer_name = 'classifier' if 'mobilenet' in base_model else 'fc' 
             self.input_size = 224
             self.input_mean = [0.485, 0.456, 0.406]
             self.input_std = [0.229, 0.224, 0.225]

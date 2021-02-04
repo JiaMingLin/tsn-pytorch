@@ -26,7 +26,7 @@ class VideoRecord(object):
 class TSNDataSet(data.Dataset):
     def __init__(self, root_path, list_file,
                  num_segments=3, new_length=1, modality='RGB',
-                 image_tmpl='img_{:05d}.jpg', transform=None,
+                 image_tmpl='frame{:06d}.jpg', transform=None,
                  force_grayscale=False, random_shift=True, test_mode=False):
 
         self.root_path = root_path
@@ -34,7 +34,7 @@ class TSNDataSet(data.Dataset):
         self.num_segments = num_segments
         self.new_length = new_length
         self.modality = modality
-        self.image_tmpl = image_tmpl
+        self.image_tmpl = 'frame{:06d}.jpg' if modality is 'RGB' else 'flow_{}_{:06d}.jpg'
         self.transform = transform
         self.random_shift = random_shift
         self.test_mode = test_mode
@@ -45,11 +45,14 @@ class TSNDataSet(data.Dataset):
         self._parse_list()
 
     def _load_image(self, directory, idx):
+        
+        img_folder = os.path.join(self.root_path, directory.split(' ')[0])
         if self.modality == 'RGB' or self.modality == 'RGBDiff':
-            return [Image.open(os.path.join(directory, self.image_tmpl.format(idx))).convert('RGB')]
-        elif self.modality == 'Flow':
-            x_img = Image.open(os.path.join(directory, self.image_tmpl.format('x', idx))).convert('L')
-            y_img = Image.open(os.path.join(directory, self.image_tmpl.format('y', idx))).convert('L')
+            return [Image.open(os.path.join(img_folder, self.image_tmpl.format(idx))).convert('RGB')]
+        elif self.modality == 'Flow' or self.modality == 'lk_flow':
+
+            x_img = Image.open(os.path.join(img_folder, self.image_tmpl.format('x', idx))).convert('L')
+            y_img = Image.open(os.path.join(img_folder, self.image_tmpl.format('y', idx))).convert('L')
 
             return [x_img, y_img]
 
