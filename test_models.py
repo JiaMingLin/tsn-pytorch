@@ -11,6 +11,9 @@ from models import TSN
 from transforms import *
 from ops import ConsensusModule
 
+import warnings
+warnings.filterwarnings("ignore")
+
 # options
 parser = argparse.ArgumentParser(
     description="Standard video-level testing")
