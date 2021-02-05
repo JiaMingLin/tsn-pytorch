@@ -190,9 +190,10 @@ def _resnet(
     layers: List[int],
     pretrained: bool,
     progress: bool,
+    num_classes: int = 1000,
     **kwargs: Any
 ) -> ResNet:
-    model = ResNet(block, layers, **kwargs)
+    model = ResNet(block, layers, num_classes = num_classes, **kwargs)
     if pretrained:
         try:
             state_dict = load_state_dict_from_url(model_urls[arch],
@@ -220,7 +221,7 @@ def resnet18_v1b_kinetics400(pretrained: bool = False, progress: bool = True, **
     Args:
         pretrained (bool): If True, returns a model pre-trained on ImageNet
     """
-    return _resnet('resnet18_v1b_kinetics400', DistillerBasicBlock, [2, 2, 2, 2], pretrained, progress,
+    return _resnet('resnet18_v1b_kinetics400', DistillerBasicBlock, [2, 2, 2, 2], pretrained, progress, num_classes=400,
                    **kwargs)
 
 def resnet34(pretrained: bool = False, progress: bool = True, **kwargs: Any) -> ResNet:
@@ -239,5 +240,5 @@ def resnet34_v1b_kinetics400(pretrained: bool = False, progress: bool = True, **
     Args:
         pretrained (bool): If True, returns a model pre-trained on ImageNet
     """
-    return _resnet('resnet34_v1b_kinetics400', BasicBlock, [3, 4, 6, 3], pretrained, progress,
+    return _resnet('resnet34_v1b_kinetics400', BasicBlock, [3, 4, 6, 3], pretrained, progress, num_classes=400,
                    **kwargs)
