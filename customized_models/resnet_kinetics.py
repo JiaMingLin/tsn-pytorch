@@ -2,8 +2,10 @@ import torch.nn as nn
 import torch
 import math
 import torch.utils.model_zoo as model_zoo
+from torch import Tensor
 from torchvision.models.resnet import BasicBlock
 from collections import OrderedDict
+from typing import Type, Any, Callable, Union, List, Optional
 
 from distiller.modules import EltwiseAdd
 
