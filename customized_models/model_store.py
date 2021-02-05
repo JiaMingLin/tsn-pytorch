@@ -5,7 +5,7 @@ import os
 import logging
 import portalocker
 
-from .utils.model_utils import download, check_sha1
+from .model_utils import download, check_sha1
 
 
 __all__ = ['get_model_file', 'purge']
