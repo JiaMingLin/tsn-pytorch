@@ -16,8 +16,8 @@ from opts import parser
 
 from tensorboardX import SummaryWriter 
 
-import warnings
-warnings.filterwarnings("ignore")
+# import warnings
+# warnings.filterwarnings("ignore")
 
 best_prec1 = 0
 
@@ -187,7 +187,6 @@ def train(train_loader, model, criterion, optimizer, epoch):
         losses.update(loss.item(), input.size(0))
         top1.update(prec1.item(), input.size(0))
         top5.update(prec5.item(), input.size(0))
-
 
         # compute gradient and do SGD step
         optimizer.zero_grad()
