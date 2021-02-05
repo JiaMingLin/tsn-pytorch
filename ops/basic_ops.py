@@ -55,6 +55,6 @@ class ConsensusModule(torch.nn.Module):
         self.dim = dim
 
     def forward(self, input):
+        SegmentConsensus.config_dim_type(self.dim, self.consensus_type)
         SegCons = SegmentConsensus.apply
-        SegCons.config_dim_type(self.dim, self.consensus_type)
         return SegCons(input)
