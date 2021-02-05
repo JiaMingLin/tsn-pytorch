@@ -19,9 +19,9 @@ class SegmentConsensus(torch.autograd.Function):
     @staticmethod
     def forward(ctx, input_tensor):
         shape = input_tensor.size()
-        if consensus_type == 'avg':
-            output = input_tensor.mean(dim=dim, keepdim=True)
-        elif consensus_type == 'identity':
+        if SegmentConsensus.consensus_type == 'avg':
+            output = input_tensor.mean(dim=SegmentConsensus.dim, keepdim=True)
+        elif SegmentConsensus.consensus_type == 'identity':
             output = input_tensor
         else:
             output = None
@@ -33,14 +33,19 @@ class SegmentConsensus(torch.autograd.Function):
     def backward(ctx, grad_output):
         saved_input, = ctx.saved_tensors
         shape = saved_input.size()
-        if consensus_type == 'avg': # avg
-            grad_in = grad_output.expand(shape) / float(shape[dim.item()])
-        elif consensus_type == 'identity': # identity
+        if SegmentConsensus.consensus_type == 'avg': # avg
+            grad_in = grad_output.expand(shape) / float(shape[SegmentConsensus.dim])
+        elif SegmentConsensus.consensus_type == 'identity': # identity
             grad_in = grad_output
         else:
             grad_in = None
 
         return grad_in
+
+    @staticmethod
+    def config_dim_type(dim, consensus_type):
+        SegmentConsensus.dim = dim
+        SegmentConsensus.consensus_type = consensus_type
 
 class ConsensusModule(torch.nn.Module):
 
@@ -51,6 +56,5 @@ class ConsensusModule(torch.nn.Module):
 
     def forward(self, input):
         SegCons = SegmentConsensus.apply
-        SegCons.dim = self.dim
-        SegCons.consensus_type = self.consensus_type
+        SegCons.config_dim_type(self.dim, self.consensus_type)
         return SegCons(input)
