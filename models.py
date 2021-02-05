@@ -4,6 +4,8 @@ from ops.basic_ops import ConsensusModule, Identity
 from transforms import *
 from torch.nn.init import normal, constant
 
+import customized_models
+
 class TSN(nn.Module):
     def __init__(self, num_class, num_segments, modality,
                  base_model='resnet101', new_length=None,
@@ -83,7 +85,11 @@ TSN Configurations:
     def _prepare_base_model(self, base_model):
 
         if 'resnet' in base_model or 'vgg' in base_model or 'mobilenet' in base_model:
-            self.base_model = getattr(torchvision.models, base_model)(True)
+            if 'kinetics' in base_model:
+                self.base_model = getattr(customized_models, base_model)(True)    
+            else:
+                self.base_model = getattr(torchvision.models, base_model)(True)
+                
             self.base_model.last_layer_name = 'classifier' if 'mobilenet' in base_model else 'fc' 
             self.input_size = 224
             self.input_mean = [0.485, 0.456, 0.406]
