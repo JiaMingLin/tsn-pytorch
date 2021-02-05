@@ -194,9 +194,13 @@ def _resnet(
 ) -> ResNet:
     model = ResNet(block, layers, **kwargs)
     if pretrained:
-        state_dict = load_state_dict_from_url(model_urls[arch],
-                                              progress=progress)
-        model.load_state_dict(state_dict)
+        try:
+            state_dict = load_state_dict_from_url(model_urls[arch],
+                                                  progress=progress)
+            model.load_state_dict(state_dict)
+        except:
+            from .model_store import get_model_file
+            model.load_state_dict(torch.load(get_model_file(arch)))
     return model
 
 
