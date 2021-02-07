@@ -60,6 +60,8 @@ class TSNDataSet(data.Dataset):
             x_img = Image.open(os.path.join(self.root_path, 'u', directory.split(' ')[0], self.image_tmpl.format(idx))).convert('L')
             y_img = Image.open(os.path.join(self.root_path, 'v', directory.split(' ')[0], self.image_tmpl.format(idx))).convert('L')
 
+            return [x_img, y_img]
+
     def _parse_list(self):
         self.video_list = [VideoRecord(x.strip().split(' ')) for x in open(self.list_file)]
 
