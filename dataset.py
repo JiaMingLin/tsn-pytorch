@@ -55,17 +55,19 @@ class TSNDataSet(data.Dataset):
             y_img = Image.open(os.path.join(img_folder, self.image_tmpl.format('y', idx))).convert('L')
 
             return [x_img, y_img]
+        elif self.modality == 'tvl1':
+            # self.root_path = ~/action_data/ucf101/tvl1_flow
+            x_img = Image.open(os.path.join(self.root_path, 'u', directory.split(' ')[0], self.image_tmpl.format(idx))).convert('L')
+            y_img = Image.open(os.path.join(self.root_path, 'v', directory.split(' ')[0], self.image_tmpl.format(idx))).convert('L')
 
     def _parse_list(self):
         self.video_list = [VideoRecord(x.strip().split(' ')) for x in open(self.list_file)]
 
     def _sample_indices(self, record):
         """
-
         :param record: VideoRecord
         :return: list
         """
-
         average_duration = (record.num_frames - self.new_length + 1) // self.num_segments
         if average_duration > 0:
             offsets = np.multiply(list(range(self.num_segments)), average_duration) + randint(average_duration, size=self.num_segments)
