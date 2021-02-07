@@ -306,7 +306,7 @@ TSN Configurations:
         if self.modality == 'RGB':
             return torchvision.transforms.Compose([GroupMultiScaleCrop(self.input_size, [1, .875, .75, .66]),
                                                    GroupRandomHorizontalFlip(is_flow=False)])
-        elif self.modality == 'Flow':
+        elif self.modality == 'Flow' or self.modality == 'tvl1':
             return torchvision.transforms.Compose([GroupMultiScaleCrop(self.input_size, [1, .875, .75]),
                                                    GroupRandomHorizontalFlip(is_flow=True)])
         elif self.modality == 'RGBDiff':
