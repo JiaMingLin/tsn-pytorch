@@ -42,7 +42,7 @@ TSN Configurations:
 
         feature_dim = self._prepare_tsn(num_class)
 
-        if self.modality == 'Flow':
+        if self.modality == 'Flow' or self.modality == 'tvl1':
             print("Converting the ImageNet model to a flow init model")
             self.base_model = self._construct_flow_model(self.base_model)
             print("Done. Flow model ready...")
@@ -95,7 +95,7 @@ TSN Configurations:
             self.input_mean = [0.485, 0.456, 0.406]
             self.input_std = [0.229, 0.224, 0.225]
 
-            if self.modality == 'Flow':
+            if self.modality == 'Flow' or self.modality == 'tvl1':
                 self.input_mean = [0.5]
                 self.input_std = [np.mean(self.input_std)]
             elif self.modality == 'RGBDiff':
@@ -109,7 +109,7 @@ TSN Configurations:
             self.input_mean = [104, 117, 128]
             self.input_std = [1]
 
-            if self.modality == 'Flow':
+            if self.modality == 'Flow' or self.modality == 'tvl1':
                 self.input_mean = [128]
             elif self.modality == 'RGBDiff':
                 self.input_mean = self.input_mean * (1 + self.new_length)
