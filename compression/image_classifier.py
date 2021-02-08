@@ -512,7 +512,7 @@ def load_data(args, model, fixed_subset=False, sequential=False, load_train=True
 
     if args.modality == 'RGB':
         data_length = 1
-    elif args.modality in ['Flow', 'RGBDiff', 'lk_flow', 'tvl1']:
+    else:
         data_length = 5
 
     train_loader = torch.utils.data.DataLoader(
