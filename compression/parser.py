@@ -53,12 +53,13 @@ def add_cmdline_args(parser):
                         metavar='N', help='classes number(default: 101)')
     parser.add_argument('--consensus_type', type=str, default='avg',
                     choices=['avg', 'max', 'topk', 'identity', 'rnn', 'cnn'])
-    parser.add_argument('--num_segments', type=int, default=3)
+    parser.add_argument('--num-segments', type=int, default=3)
     parser.add_argument('--dropout', '--do', default=0.5, type=float,
                     metavar='DO', help='dropout ratio (default: 0.5)')
     parser.add_argument('--clip-gradient', '--gd', default=None, type=float,
                     metavar='W', help='gradient norm clipping (default: disabled)')
-    parser.add_argument('--no_partialbn', '--npb', default=False, action="store_true")
+    parser.add_argument('--no-partialbn', '--npb', default=False, action="store_true")
+    parser.add_argument('--flow-prefix', type=str, default='flow_')
 
     distiller.knowledge_distillation.add_distillation_args(parser, models.ALL_MODEL_NAMES, True)
     distiller.pruning.greedy_filter_pruning.add_greedy_pruner_args(parser)
