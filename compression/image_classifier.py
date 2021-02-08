@@ -219,11 +219,12 @@ def init_classifier_compression_arg_parser(include_ptq_lapq_args=False):
 
     parser = argparse.ArgumentParser(description='Distiller image classification model compression')
     parser.add_argument('data', metavar='DATASET_DIR', help='path to dataset')
-    parser.add_argument('--arch', '-a', metavar='ARCH', default='resnet18', type=lambda s: s.lower(),
-                        choices=models.__dict__,
-                        help='model architecture: ' +
-                        ' | '.join(models.__dict__) +
-                        ' (default: resnet18)')
+    parser.add_argument('--arch', '-a', metavar='ARCH', default='resnet18', type=lambda s: s.lower())
+        # ,
+        #                 choices=models.__dict__,
+        #                 help='model architecture: ' +
+        #                 ' | '.join(models.__dict__) +
+        #                 ' (default: resnet18)')
     parser.add_argument('-j', '--workers', default=4, type=int, metavar='N',
                         help='number of data loading workers (default: 4)')
     parser.add_argument('--epochs', type=int, metavar='N', default=90,
