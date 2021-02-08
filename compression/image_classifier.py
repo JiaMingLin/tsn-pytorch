@@ -952,7 +952,7 @@ def earlyexit_validate_stats(args):
 
 def _convert_ptq_to_pytorch(model, args):
     msglogger.info('Converting Distiller PTQ model to PyTorch quantization API')
-    dummy_input = distiller.get_dummy_input(input_shape=model.input_shape)
+    dummy_input = distiller.get_dummy_input(input_shape=model.module.input_shape)
     model = quantization.convert_distiller_ptq_model_to_pytorch(model, dummy_input, backend=args.qe_pytorch_backend)
     msglogger.debug('\nModel after conversion:\n{}'.format(model))
     args.device = 'cpu'

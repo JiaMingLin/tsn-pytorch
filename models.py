@@ -301,6 +301,14 @@ TSN Configurations:
         return self.input_size
 
     @property
+    def input_shape(self):
+        if self.modality in ['RGB', 'RGBDiff'] :
+            return (1, self.new_length * 3, self.input_size, self.input_size)
+        else:
+            return (1, self.new_length * 2, self.input_size, self.input_size)
+    
+
+    @property
     def scale_size(self):
         return self.input_size * 256 // 224
 
