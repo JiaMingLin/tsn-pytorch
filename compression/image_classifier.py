@@ -41,7 +41,7 @@ import distiller.quantization as quantization
 from distiller.utils import float_range_argparse_checker as float_range
 
 import sys
-sys.path.insert(0,'../')
+# sys.path.insert(0,'../')
 from transforms import *
 from dataset import TSNDataSet
 from models import TSN
