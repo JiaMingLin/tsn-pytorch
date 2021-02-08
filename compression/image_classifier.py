@@ -1010,7 +1010,7 @@ def quantize_and_test_model(test_loader, model, criterion, args, loggers=None, s
         qe_model = copy.deepcopy(model).to(args.device)
 
     quantizer = quantization.PostTrainLinearQuantizer.from_args(qe_model, args_qe)
-    dummy_input = distiller.get_dummy_input(input_shape=model.input_shape)
+    dummy_input = distiller.get_dummy_input(input_shape=model.module.input_shape)
     quantizer.prepare_model(dummy_input)
 
     if args.qe_convert_pytorch:
