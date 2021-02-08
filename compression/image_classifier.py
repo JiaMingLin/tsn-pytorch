@@ -490,9 +490,9 @@ def load_data(args, model, fixed_subset=False, sequential=False, load_train=True
     #                           args.effective_train_size, args.effective_valid_size, args.effective_test_size,
     #                           fixed_subset, sequential, test_only)
 
-    train_setting_file = "train_%s_split%d.txt" % (args.modality, args.split)
+    train_setting_file = "train_%s_split%d.txt" % (args.modality.lower(), args.split)
     train_split_file = os.path.join(args.settings, args.dataset, train_setting_file)
-    val_setting_file = "val_%s_split%d.txt" % (args.modality, args.split)
+    val_setting_file = "val_%s_split%d.txt" % (args.modality.lower(), args.split)
     val_split_file = os.path.join(args.settings, args.dataset, val_setting_file)
     if not os.path.exists(train_split_file) or not os.path.exists(val_split_file):
         print("No split file exists in %s directory. Preprocess the dataset first" % (args.settings))

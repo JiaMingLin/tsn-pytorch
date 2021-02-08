@@ -28,9 +28,9 @@ def add_cmdline_args(parser):
     parser.add_argument('--earlyexit_thresholds', type=float, nargs='*', dest='earlyexit_thresholds', default=None,
                         help='List of EarlyExit thresholds (e.g. --earlyexit_thresholds 1.2 0.9)')
     
-    parser.add_argument('--modality', '-m', metavar='MODALITY', default='rgb',
-                    	choices=["rgb", "tvl1_flow", "lk_flow"],
-                    	help='modality: rgb | flow')
+    parser.add_argument('--modality', '-m', metavar='MODALITY', default='RGB',
+                    	choices=["RGB", "tvl1", "lk_flow"],
+                    	help='modality: RGB | flow')
 
     parser.add_argument('--dataset', '-d', default='ucf101',
                     	choices=["ucf101", "hmdb51"],
