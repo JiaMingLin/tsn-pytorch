@@ -417,6 +417,7 @@ def _init_learner(args):
             msglogger.info('\nreset_optimizer flag set: Overriding resumed optimizer and resetting epoch count to 0')
 
     if optimizer is None and not args.evaluate:
+
         optimizer = torch.optim.SGD(model.parameters(), lr=args.lr,
                                     momentum=args.momentum, weight_decay=args.weight_decay)
         msglogger.debug('Optimizer Type: %s', type(optimizer))
@@ -496,12 +497,12 @@ def load_data(args, model, fixed_subset=False, sequential=False, load_train=True
     if not os.path.exists(train_split_file) or not os.path.exists(val_split_file):
         print("No split file exists in %s directory. Preprocess the dataset first" % (args.settings))
 
-    crop_size = model.crop_size
-    scale_size = model.scale_size
-    input_mean = model.input_mean
-    input_std = model.input_std
-    train_augmentation = model.get_augmentation()
-    policies = model.get_optim_policies()
+    crop_size = model.module.crop_size
+    scale_size = model.module.scale_size
+    input_mean = model.module.input_mean
+    input_std = model.module.input_std
+    train_augmentation = model.module.get_augmentation()
+    policies = model.module.get_optim_policies()
 
     # Data loading code
     if args.modality != 'RGBDiff':

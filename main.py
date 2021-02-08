@@ -149,7 +149,7 @@ def main():
             save_checkpoint(log_dir, {
                 'epoch': epoch + 1,
                 'arch': args.arch,
-                'state_dict': model.state_dict(),
+                'state_dict': model.module.state_dict(),
                 'best_prec1': best_prec1,
             }, is_best)
 
