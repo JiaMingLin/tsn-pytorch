@@ -43,7 +43,7 @@ def main():
 
 def handle_subapps(model, criterion, optimizer, compression_scheduler, pylogger, args):
     def load_test_data(args):
-        test_loader = classifier.load_data(args, load_train=False, load_val=False, load_test=True)
+        test_loader = classifier.load_data(args, model, load_train=False, load_val=False, load_test=True)
         return test_loader
 
     do_exit = False
