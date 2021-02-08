@@ -218,7 +218,7 @@ def init_classifier_compression_arg_parser(include_ptq_lapq_args=False):
     SUMMARY_CHOICES = ['sparsity', 'compute', 'model', 'modules', 'png', 'png_w_params']
 
     parser = argparse.ArgumentParser(description='Distiller image classification model compression')
-    parser.add_argument('data', metavar='DATASET_DIR', help='path to dataset')
+    parser.add_argument('data_root_path', metavar='DATASET_DIR', help='path to dataset')
     parser.add_argument('--arch', '-a', metavar='ARCH', default='resnet18', type=lambda s: s.lower())
         # ,
         #                 choices=models.__dict__,
