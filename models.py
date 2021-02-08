@@ -6,6 +6,8 @@ from torch.nn.init import normal, constant
 
 import customized_models
 
+__all__ = ['resnet18', 'mobilenet_v2', 'resnet18_v1b_kinetics400']
+
 class TSN(nn.Module):
     def __init__(self, num_class, num_segments, modality,
                  base_model='resnet101', new_length=None,

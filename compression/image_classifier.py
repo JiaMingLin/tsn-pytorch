@@ -44,6 +44,7 @@ import sys
 sys.path.insert(0,'../')
 from transforms import *
 from dataset import TSNDataSet
+import models
 from models import TSN
 from create_model import create_model
 
