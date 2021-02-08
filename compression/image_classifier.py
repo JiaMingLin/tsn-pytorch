@@ -516,7 +516,7 @@ def load_data(args, model, fixed_subset=False, sequential=False, load_train=True
         data_length = 5
 
     train_loader = torch.utils.data.DataLoader(
-        TSNDataSet(args.data_root_path, args.train_list, num_segments=args.num_segments,
+        TSNDataSet(args.data_root_path, train_split_file, num_segments=args.num_segments,
                    new_length=data_length,
                    modality=args.modality,
                    image_tmpl="frame{:06d}.jpg" if args.modality in ["RGB", "RGBDiff", 'tvl1'] else args.flow_prefix+"{}_{:06d}.jpg",
@@ -530,7 +530,7 @@ def load_data(args, model, fixed_subset=False, sequential=False, load_train=True
         num_workers=args.workers, pin_memory=True)
 
     val_loader = torch.utils.data.DataLoader(
-        TSNDataSet(args.data_root_path, args.val_list, num_segments=args.num_segments,
+        TSNDataSet(args.data_root_path, val_split_file, num_segments=args.num_segments,
                    new_length=data_length,
                    modality=args.modality,
                    image_tmpl="frame{:06d}.jpg" if args.modality in ["RGB", "RGBDiff", 'tvl1'] else args.flow_prefix+"{}_{:06d}.jpg",
