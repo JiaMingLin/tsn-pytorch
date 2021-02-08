@@ -496,6 +496,13 @@ def load_data(args, model, fixed_subset=False, sequential=False, load_train=True
     if not os.path.exists(train_split_file) or not os.path.exists(val_split_file):
         print("No split file exists in %s directory. Preprocess the dataset first" % (args.settings))
 
+    crop_size = model.crop_size
+    scale_size = model.scale_size
+    input_mean = model.input_mean
+    input_std = model.input_std
+    train_augmentation = model.get_augmentation()
+    policies = model.get_optim_policies()
+
     # Data loading code
     if args.modality != 'RGBDiff':
         normalize = GroupNormalize(input_mean, input_std)
@@ -506,9 +513,6 @@ def load_data(args, model, fixed_subset=False, sequential=False, load_train=True
         data_length = 1
     elif args.modality in ['Flow', 'RGBDiff', 'lk_flow', 'tvl1']:
         data_length = 5
-
-    train_augmentation = model.get_augmentation()
-    policies = model.get_optim_policies()
 
     train_loader = torch.utils.data.DataLoader(
         TSNDataSet(args.data_root_path, args.train_list, num_segments=args.num_segments,
