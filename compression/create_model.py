@@ -36,6 +36,7 @@ def create_model(args):
     num_classes = args.num_classes
     parallel = not args.load_serialized
     device_ids=args.gpus
+    arch = args.arch
 
     dataset = dataset.lower()
     if dataset not in SUPPORTED_DATASETS:
@@ -46,7 +47,7 @@ def create_model(args):
         
         # model = models.__dict__[arch](pretrained, num_classes)
         model = TSN(num_classes, args.num_segments, args.modality,
-                base_model=args.arch,
+                base_model=arch,
                 consensus_type=args.consensus_type, dropout=args.dropout, partial_bn=not args.no_partialbn)
 
     except ValueError:
