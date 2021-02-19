@@ -20,7 +20,7 @@ warnings.filterwarnings("ignore")
 parser = argparse.ArgumentParser(
     description="Standard video-level testing")
 parser.add_argument('dataset', type=str, choices=['ucf101', 'hmdb51', 'kinetics'])
-parser.add_argument('modality', type=str, choices=['RGB', 'Flow', 'RGBDiff'])
+parser.add_argument('modality', type=str, choices=['RGB', 'Flow', 'RGBDiff', 'tvl1'])
 parser.add_argument('data_root_path', type=str)
 parser.add_argument('test_list', type=str)
 parser.add_argument('weights', type=str)
@@ -78,7 +78,7 @@ data_loader = torch.utils.data.DataLoader(
         TSNDataSet(args.data_root_path, args.test_list, num_segments=args.test_segments,
                    new_length=1 if args.modality == "RGB" else 5,
                    modality=args.modality,
-                   image_tmpl="frame{:06d}.jpg" if args.modality in ['RGB', 'RGBDiff'] else args.flow_prefix+"{}_{:06d}.jpg",
+                   image_tmpl="frame{:06d}.jpg" if args.modality in ['RGB', 'RGBDiff', 'tvl1'] else args.flow_prefix+"{}_{:06d}.jpg",
                    test_mode=True,
                    transform=torchvision.transforms.Compose([
                        cropping,
@@ -110,7 +110,7 @@ def eval_video(video_data):
 
     if args.modality == 'RGB':
         length = 3
-    elif args.modality == 'Flow':
+    elif args.modality == 'Flow' or args.modality == 'tvl1':
         length = 10
     elif args.modality == 'RGBDiff':
         length = 18
