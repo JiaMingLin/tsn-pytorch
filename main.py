@@ -76,11 +76,19 @@ def main():
     elif args.modality in ['Flow', 'RGBDiff', 'lk_flow', 'tvl1']:
         data_length = 5
 
+
+    naming_pattern = ''
+
+    if args.dataset == 'ucf101':
+        naming_pattern = "frame{:06d}.jpg" if args.modality in ["RGB", "RGBDiff", 'tvl1'] else args.flow_prefix+"{}_{:06d}.jpg",
+    elif args.dataset == 'hmdb51':
+        naming_pattern = "image_{:05d}.jpg" if args.modality in ["RGB", "RGBDiff"] else args.flow_prefix+"{}_{:05d}.jpg",
+
     train_loader = torch.utils.data.DataLoader(
         TSNDataSet(args.data_root_path, args.train_list, num_segments=args.num_segments,
                    new_length=data_length,
                    modality=args.modality,
-                   image_tmpl="frame{:06d}.jpg" if args.modality in ["RGB", "RGBDiff", 'tvl1'] else args.flow_prefix+"{}_{:06d}.jpg",
+                   image_tmpl=naming_pattern,
                    transform=torchvision.transforms.Compose([
                        train_augmentation,
                        Stack(roll=args.arch == 'BNInception'),
@@ -94,7 +102,7 @@ def main():
         TSNDataSet(args.data_root_path, args.val_list, num_segments=args.num_segments,
                    new_length=data_length,
                    modality=args.modality,
-                   image_tmpl="frame{:06d}.jpg" if args.modality in ["RGB", "RGBDiff", 'tvl1'] else args.flow_prefix+"{}_{:06d}.jpg",
+                   image_tmpl=naming_pattern,
                    random_shift=False,
                    transform=torchvision.transforms.Compose([
                        GroupScale(int(scale_size)),
