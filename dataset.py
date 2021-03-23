@@ -16,7 +16,8 @@ class VideoRecord(object):
 
     @property
     def num_frames(self):
-        return int(self._data[1])
+        frames = int(self._data[1])
+        return frames-1 if frames > 1 else 1
 
     @property
     def label(self):
